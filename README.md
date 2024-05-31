@@ -1,2 +1,3 @@
-# openg2p-pbms-deployment
-Deployment scripts and Helm charts for PBMS
+# OpenG2P PBMS Deployment
+
+Deployment scripts, Helm charts for PBMS
