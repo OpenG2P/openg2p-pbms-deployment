@@ -7,26 +7,6 @@ global:
   sysAdminEmail: admin@openg2p.sandbox.net
   mailname: "openg2p.sandbox.net"
 
-istio:
-  enabled: true
-  virtualservice:
-    enabled: true
-    host: ""
-    gateway: "internal"
-    destination: '{{ .Release.Name }}-odoo'
-    destinationPort: '{{ .Values.odoo.service.port }}'
-  gateway:
-    enabled: false
-    host: ""
-    ingressController:
-      istio: ingressgateway
-    httpTlsRedirect: false
-    httpEnabled: true
-    httpsEnabled: false
-    tls:
-      mode: SIMPLE
-      credentialName: ""
-
 odoo:
   image:
     repository: openg2p/openg2p-odoo-package
@@ -127,6 +107,41 @@ minio:
       tls:
         mode: SIMPLE
         credentialName: ""
+
+istio:
+  enabled: true
+  virtualservice:
+    enabled: true
+    host: ""
+    gateway: "internal"
+    destination: '{{ .Release.Name }}-odoo'
+    destinationPort: '{{ .Values.odoo.service.port }}'
+  gateway:
+    enabled: false
+    host: ""
+    ingressController:
+      istio: ingressgateway
+    httpTlsRedirect: false
+    httpEnabled: true
+    httpsEnabled: false
+    tls:
+      mode: SIMPLE
+      credentialName: ""
+
+loggingFlow:
+  enabled: true
+  outputRef: opensearch
+  extraLocalOutputRefs: []
+  globalOutputRefs: []
+  parser:
+    key_name: message
+    parse:
+      type: regexp
+      expression: /^(?<asctime>(\S+)(\s)(\S+))\s+(?<pid>\S+)\s+(?<levelname>\S+)\s+(?<dbname>\S+)\s+(?<name>\S+)\s+(?<message>.*)$/
+    remove_key_name_field: true
+    replace_invalid_sequence: true
+    reserve_data: true
+  extraFilters: []
 
 postgresIngress:
   enabled: false
