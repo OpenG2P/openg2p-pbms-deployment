@@ -4,14 +4,14 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: {{ include "openg2p.fullname" . }}-service-provider
+  name: {{ include "pbms.fullname" . }}-service-provider
   labels:
-    {{- include "openg2p.labels" . | nindent 4 }}
+    {{- include "pbms.labels" . | nindent 4 }}
 spec:
   hosts:
   - {{ default .Values.global.serviceProviderHostname .Values.serviceProviderIngress.istio.virtualservice.host | quote }}
   gateways:
-  - {{ default (printf "%s-service-provider" (include "openg2p.fullname" .)) .Values.serviceProviderIngress.istio.virtualservice.gateway }}
+  - {{ default (printf "%s-service-provider" (include "pbms.fullname" .)) .Values.serviceProviderIngress.istio.virtualservice.gateway }}
   http:
   - match:
     - uri:
@@ -38,6 +38,13 @@ spec:
         set:
           x-forwarded-host: {{ default .Values.global.serviceProviderHostname .Values.serviceProviderIngress.istio.virtualservice.host | quote }}
           x-forwarded-proto: https
+    match:
+    - uri:
+        prefix: {{ include "common.tplvalues.render" (dict "value" .Values.serviceProviderIngress.istio.virtualservice.prefix "context" $) }}
+    {{- if .Values.serviceProviderIngress.istio.virtualservice.rewriteUri }}
+    rewrite:
+      uri: {{ include "common.tplvalues.render" (dict "value" .Values.serviceProviderIngress.istio.virtualservice.rewriteUri "context" $) }}
+    {{- end }}
     route:
     - destination:
         host: {{ tpl .Values.serviceProviderIngress.istio.virtualservice.destination $ }}

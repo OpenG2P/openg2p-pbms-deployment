@@ -1,1 +1,1 @@
-OpenG2P Program & Beneficiary Management System Helm chart
+- Refer to deployment guide [here](https://docs.openg2p.org/pbms/deployment).

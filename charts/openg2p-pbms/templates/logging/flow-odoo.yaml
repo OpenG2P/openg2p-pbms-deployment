@@ -3,7 +3,7 @@
 apiVersion: logging.banzaicloud.io/v1beta1
 kind: Flow
 metadata:
-  name: {{ include "socialRegistry.fullname" . }}-odoo
+  name: {{ include "common.names.fullname" .Subcharts.odoo }}
 spec:
   filters:
   - parser:
@@ -12,7 +12,7 @@ spec:
   {{- include "common.tplvalues.render" (dict "value" .Values.loggingFlow.extraFilters "context" $) | nindent 2 }}
   {{- end }}
   localOutputRefs:
-  - {{ .Values.loggingFlow.outputRef }}
+  - {{ include "common.tplvalues.render" (dict "value" .Values.loggingFlow.outputRef "context" $) }}
   {{- if .Values.loggingFlow.extraLocalOutputRefs }}
   {{- include "common.tplvalues.render" (dict "value" .Values.loggingFlow.extraLocalOutputRefs "context" $) | nindent 2 }}
   {{- end }}

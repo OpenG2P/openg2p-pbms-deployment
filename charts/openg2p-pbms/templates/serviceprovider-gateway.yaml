@@ -4,9 +4,9 @@
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
-  name: {{ include "openg2p.fullname" . }}-service-provider
+  name: {{ include "pbms.fullname" . }}-service-provider
   labels:
-    {{- include "openg2p.labels" . | nindent 4 }}
+    {{- include "pbms.labels" . | nindent 4 }}
 spec:
   selector:
     {{ toYaml .Values.serviceProviderIngress.istio.gateway.ingressController | nindent 4 }}
