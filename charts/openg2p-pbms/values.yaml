@@ -44,6 +44,9 @@ odoo:
 
   postgresql:
     enabled: true
+    auth:
+      username: pbmsuser
+      database: pbmsdb
     primary:
       extendedConfiguration: |-
         wal_level = logical
@@ -373,7 +376,7 @@ reporting-init:
     branch: develop
     subDir: "scripts/pbms"
   envVars:
-    DB_NAME: 'bitnami_odoo'
+    DB_NAME: pbmsdb
 
 loggingFlow:
   enabled: false
