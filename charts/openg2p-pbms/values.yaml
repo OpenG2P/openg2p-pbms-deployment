@@ -323,7 +323,7 @@ opensearch:
     enabled: false
     type: opensearch
     scheme: https
-    host: '{{ printf "%s-opensearch.%s" (.Release.Name) (.Release.Namespace) }}'
+    host: '{{ include "common.names.fullname" .Subcharts.opensearch }}.{{ .Release.Namespace }}'
     port: "9200"
     user: logstash
     passwordFrom:
