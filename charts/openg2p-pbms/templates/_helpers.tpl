@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "openg2p.name" -}}
+{{- define "pbms.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "openg2p.fullname" -}}
+{{- define "pbms.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "openg2p.chart" -}}
+{{- define "pbms.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "openg2p.labels" -}}
-helm.sh/chart: {{ include "openg2p.chart" . }}
-{{ include "openg2p.selectorLabels" . }}
+{{- define "pbms.labels" -}}
+helm.sh/chart: {{ include "pbms.chart" . }}
+{{ include "pbms.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,7 +45,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "openg2p.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "openg2p.name" . }}
+{{- define "pbms.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "pbms.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}

@@ -1,0 +1,27 @@
+{{- if .Values.odoo.enabled }}
+{{- if .Values.odoo.postgresql.enabled }}
+{{- if .Values.odoo.postgresql.istio.enabled }}
+{{- if .Values.odoo.postgresql.istio.virtualservice.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ include "postgresql.v1.primary.fullname" .Subcharts.odoo.Subcharts.postgresql }}
+  labels:
+    {{- include "pbms.labels" . | nindent 4 }}
+spec:
+  hosts:
+  - {{ default .Values.global.pbmsHostname .Values.odoo.postgresql.istio.virtualservice.host | quote }}
+  gateways:
+  - {{ default (include "postgresql.v1.primary.fullname" .Subcharts.odoo.Subcharts.postgresql) .Values.odoo.postgresql.istio.virtualservice.gateway }}
+  tcp:
+  - match:
+    - port: {{ .Values.odoo.postgresql.istio.virtualservice.matchPort }}
+    route:
+    - destination:
+        host: {{ tpl .Values.odoo.postgresql.istio.virtualservice.destination $ }}
+        port:
+          number: {{ tpl .Values.odoo.postgresql.istio.virtualservice.destinationPort $ }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

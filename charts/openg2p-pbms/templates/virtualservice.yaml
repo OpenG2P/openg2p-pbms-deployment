@@ -3,14 +3,14 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: {{ include "openg2p.fullname" . }}
+  name: {{ include "pbms.fullname" . }}
   labels:
-    {{- include "openg2p.labels" . | nindent 4 }}
+    {{- include "pbms.labels" . | nindent 4 }}
 spec:
   hosts:
   - {{ default .Values.global.pbmsHostname .Values.istio.virtualservice.host | quote }}
   gateways:
-  - {{ default (include "openg2p.fullname" .) .Values.istio.virtualservice.gateway }}
+  - {{ default (include "pbms.fullname" .) .Values.istio.virtualservice.gateway }}
   http:
   - match:
     - uri:
@@ -34,6 +34,13 @@ spec:
         set:
           x-forwarded-host: {{ default .Values.global.pbmsHostname .Values.istio.virtualservice.host | quote }}
           x-forwarded-proto: https
+    match:
+    - uri:
+        prefix: {{ include "common.tplvalues.render" (dict "value" .Values.istio.virtualservice.prefix "context" $) }}
+    {{- if .Values.istio.virtualservice.rewriteUri }}
+    rewrite:
+      uri: {{ include "common.tplvalues.render" (dict "value" .Values.istio.virtualservice.rewriteUri "context" $) }}
+    {{- end }}
     route:
     - destination:
         host: {{ tpl .Values.istio.virtualservice.destination $ }}
