@@ -114,7 +114,6 @@ mail:
 odk-central:
   enabled: true
   hostname: odk-pbms.openg2p.sandbox.net
-
   odk-central-mail:
     enabled: true
     # envVars:
