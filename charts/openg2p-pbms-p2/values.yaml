@@ -144,6 +144,7 @@ esignet:
     esignet_captcha_secret_key: ''
   mock-identity-system:
     enabled: true
+    hostname: esignet-pbms.openg2p.sandbox.net
     springConfig:
       names: application,mock-identity-system
       profile: default

@@ -122,6 +122,7 @@ questions:
   description: This installs Mock Identity System with eSignet
   type: boolean
   label: Install Mock Identity System?
+  group: Mock Identity System Settings
   show_if: "esignet.enabled=true"
 
 - variable: esignet.mock-identity-system.hostname
