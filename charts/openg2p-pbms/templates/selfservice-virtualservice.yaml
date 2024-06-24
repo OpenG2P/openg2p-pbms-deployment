@@ -9,7 +9,7 @@ metadata:
     {{- include "pbms.labels" . | nindent 4 }}
 spec:
   hosts:
-  - {{ default .Values.global.selfServiceHostname .Values.selfServiceIngress.istio.virtualservice.host | quote }}
+  - {{ default .Values.selfServiceHostname .Values.selfServiceIngress.istio.virtualservice.host | quote }}
   gateways:
   - {{ default (printf "%s-self-service" (include "pbms.fullname" .)) .Values.selfServiceIngress.istio.virtualservice.gateway }}
   http:
@@ -32,11 +32,11 @@ spec:
     - uri:
         prefix: /serviceprovider
     redirect:
-      authority: {{ default .Values.global.serviceProviderHostname .Values.serviceProviderIngress.istio.virtualservice.host | quote }}
+      authority: {{ default .Values.serviceProviderHostname .Values.serviceProviderIngress.istio.virtualservice.host | quote }}
   - headers:
       request:
         set:
-          x-forwarded-host: {{ default .Values.global.selfServiceHostname .Values.selfServiceIngress.istio.virtualservice.host | quote }}
+          x-forwarded-host: {{ default .Values.selfServiceHostname .Values.selfServiceIngress.istio.virtualservice.host | quote }}
           x-forwarded-proto: https
     match:
     - uri:

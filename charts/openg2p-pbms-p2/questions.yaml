@@ -3,29 +3,21 @@ questions:
   description: Keycloak Base Url used in all components
   type: string
   label: Keycloak Base URL
+  group: General Settings
 
+# Superset Settings
 - variable: superset.enabled
   description: This installs Superset for reporting
   type: boolean
   label: Install Superset?
+  group: Superset Settings
 
-- variable: esignet.enabled
-  description: This installs eSignet for mocking user authentication
-  type: boolean
-  label: Install eSignet?
-
-- variable: esignet.mock-identity-system.enabled
-  description: This installs Mock Identity System with eSignet
-  type: boolean
-  label: Install Mock Identity System?
-  show_if: "esignet.enabled=true"
-
-# Superset Settings
-- variable: global.supersetHostname
+- variable: superset.hostname
   description: Hostname for Superset Dashboards
   type: string
   label: Superset Hostname
   group: Superset Settings
+  show_if: "superset.enabled=true"
 
 - variable: superset.oidcClientId
   description: OIDC Client ID for Superset login
@@ -49,11 +41,18 @@ questions:
   show_if: "superset.enabled=true"
 
 # eSignet
-- variable: global.esignetHostname
+- variable: esignet.enabled
+  description: This installs eSignet for mocking user authentication
+  type: boolean
+  label: Install eSignet?
+  group: eSignet Settings
+
+- variable: esignet.hostname
   description: Hostname under which eSignet should be accessible
   type: string
   label: eSignet Hostname
   group: eSignet Settings
+  show_if: "esignet.enabled=true"
 
 - variable: esignet.springConfig.profile
   type: string
@@ -119,6 +118,19 @@ questions:
   show_if: "esignet.enabled=true&&esignet.springConfig.gitRepo.enabled=false"
 
 # Mock Identity Settings
+- variable: esignet.mock-identity-system.enabled
+  description: This installs Mock Identity System with eSignet
+  type: boolean
+  label: Install Mock Identity System?
+  show_if: "esignet.enabled=true"
+
+- variable: esignet.mock-identity-system.hostname
+  description: Hostname under which Mock Identity System should be accessible
+  type: string
+  label: Mock Identity System Hostname
+  group: Mock Identity System Settings
+  show_if: "esignet.enabled=true&&esignet.mock-identity-system.enabled=true"
+
 - variable: esignet.mock-identity-system.springConfig.profile
   type: string
   label: Spring Config Profile

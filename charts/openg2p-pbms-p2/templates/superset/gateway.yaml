@@ -22,7 +22,7 @@ spec:
       number: 8080
       protocol: HTTP2
     hosts:
-      - {{ default .Values.global.supersetHostname .Values.superset.istio.gateway.host | quote }}
+      - {{ default .Values.superset.hostname .Values.superset.istio.gateway.host | quote }}
     {{- if .Values.superset.istio.gateway.httpTlsRedirect }}
     tls:
       httpsRedirect: true
@@ -34,7 +34,7 @@ spec:
       number: 8443
       protocol: HTTPS
     hosts:
-      - {{ default .Values.global.supersetHostname .Values.superset.istio.gateway.host | quote }}
+      - {{ default .Values.superset.hostname .Values.superset.istio.gateway.host | quote }}
     tls:
       {{ toYaml (omit .Values.superset.istio.gateway.tls "enabled") | nindent 6 }}
   {{- end }}

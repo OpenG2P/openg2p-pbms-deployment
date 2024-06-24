@@ -1,35 +1,12 @@
 global:
-  supersetHostname: superset.openg2p.sandbox.net
-  esignetHostname: esignet.openg2p.sandbox.net
-
   keycloakBaseUrl: https://keycloak.openg2p.sandbox.net
   keycloakIssuerUrl: '{{ tpl .Values.global.keycloakBaseUrl $ }}/realms/master'
 
 nameOverride: openg2p-pbms
 
-# TODO: Doing this since postgres and redis charts inside superset are old.
-supersetPostgresql:
-  nameOverride: superset-postgresql
-  auth:
-    username: superset
-    password: superset
-    database: superset
-  primary:
-    extendedConfiguration: |-
-      wal_level = logical
-      max_wal_senders = 20
-      max_replication_slots = 10
-supersetRedis:
-  nameOverride: superset-redis
-  architecture: standalone
-  auth:
-    enabled: false
-  master:
-    persistence:
-      enabled: false
-
 superset:
-  enabled: false
+  enabled: true
+  hostname: superset-pbms.openg2p.sandbox.net
 
   oidcIssuerUrl: '{{ tpl .Values.global.keycloakIssuerUrl $ }}'
   oidcClientId: openg2p-pbms-superset
@@ -136,8 +113,31 @@ superset:
         mode: SIMPLE
         credentialName: ""
 
+# TODO: Doing this since postgres and redis charts inside superset are old.
+supersetPostgresql:
+  nameOverride: superset-postgresql
+  auth:
+    username: superset
+    password: superset
+    database: superset
+  primary:
+    extendedConfiguration: |-
+      wal_level = logical
+      max_wal_senders = 20
+      max_replication_slots = 10
+supersetRedis:
+  nameOverride: superset-redis
+  architecture: standalone
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: false
+
 esignet:
   enabled: false
+  hostname: esignet-pbms.openg2p.sandbox.net
+
   captchaEnabled: false
   envVars:
     esignet_captcha_site_key: ''
