@@ -1,0 +1,28 @@
+{{- if .Values.loggingOpensearch.enabled }}
+{{- if .Values.loggingOpensearch.istio.enabled }}
+{{- if .Values.loggingOpensearch.istio.virtualservice.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ include "common.names.fullname" .Subcharts.loggingOpensearch }}
+  labels:
+    {{- include "pbms.labels" . | nindent 4 }}
+spec:
+  hosts:
+  - {{ default .Values.loggingOpensearch.hostname .Values.loggingOpensearch.istio.virtualservice.host | quote }}
+  gateways:
+  - {{ default (include "common.names.fullname" .Subcharts.loggingOpensearch) .Values.loggingOpensearch.istio.virtualservice.gateway }}
+  http:
+  - headers:
+      request:
+        set:
+          x-forwarded-host: {{ default .Values.loggingOpensearch.hostname .Values.loggingOpensearch.istio.virtualservice.host | quote }}
+          x-forwarded-proto: https
+    route:
+    - destination:
+        host: {{ tpl .Values.loggingOpensearch.istio.virtualservice.destination $ }}
+        port:
+          number: {{ tpl .Values.loggingOpensearch.istio.virtualservice.destinationPort $ }}
+{{- end }}
+{{- end }}
+{{- end }}

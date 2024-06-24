@@ -10,7 +10,7 @@ metadata:
     {{- include "pbms.labels" . | nindent 4 }}
 spec:
   hosts:
-  - {{ default .Values.global.pbmsHostname .Values.odoo.postgresql.istio.virtualservice.host | quote }}
+  - {{ default .Values.hostname .Values.odoo.postgresql.istio.virtualservice.host | quote }}
   gateways:
   - {{ default (include "postgresql.v1.primary.fullname" .Subcharts.odoo.Subcharts.postgresql) .Values.odoo.postgresql.istio.virtualservice.gateway }}
   tcp:

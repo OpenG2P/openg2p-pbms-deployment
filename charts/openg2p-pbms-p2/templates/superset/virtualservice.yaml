@@ -14,14 +14,14 @@ metadata:
   {{- end }}
 spec:
   hosts:
-  - {{ default .Values.global.supersetHostname .Values.superset.istio.virtualservice.host | quote }}
+  - {{ default .Values.superset.hostname .Values.superset.istio.virtualservice.host | quote }}
   gateways:
   - {{ default (include "common.names.fullname" .Subcharts.superset) .Values.superset.istio.virtualservice.gateway }}
   http:
   - headers:
       request:
         set:
-          x-forwarded-host: {{ default .Values.global.supersetHostname .Values.superset.istio.virtualservice.host | quote }}
+          x-forwarded-host: {{ default .Values.superset.hostname .Values.superset.istio.virtualservice.host | quote }}
           x-forwarded-proto: https
     route:
     - destination:

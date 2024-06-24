@@ -1,99 +1,69 @@
 questions:
-- variable: global.pbmsHostname
-  description: Hostname to access OpenG2P PBMS
+- variable: hostname
+  description: Hostname to access PBMS
   type: string
   label: Hostname
+  group: General Settings
 
-- variable: global.pbmsSelfServiceHostname
+- variable: selfServiceHostname
   description: Hostname to access OpenG2P PBMS Self Service Portal
   type: string
   label: Self Service Portal Hostname
+  group: General Settings
 
-- variable: global.pbmsServiceProviderHostname
+- variable: serviceProviderHostname
   description: Hostname to access OpenG2P PBMS Service Provider Portal
   type: string
   label: Service Provider Portal Hostname
+  group: General Settings
 
 - variable: global.keycloakBaseUrl
   description: Keycloak Base Url used in all components
   type: string
   label: Keycloak Base URL
+  group: General Settings
 
+- variable: odoo.oidcClientId
+  description: OIDC Client ID for PBMS
+  type: string
+  label: OIDC Client ID
+  group: General Settings
+
+- variable: odoo.oidcClientSecret
+  description: OIDC Client Secret for PBMS
+  type: string
+  label: OIDC Client Secret
+  group: General Settings
+
+# Mail Settings
 - variable: mail.enabled
   description: This installs Mail server for relaying SMTP requests to preferred backend.
   type: boolean
   label: Install Mail SMTP Server?
+  group: Mail Settings
 
+# ODK Central Settings
 - variable: odk-central.enabled
   description: This installs ODK Central.
   type: boolean
   label: Install ODK Central?
+  group: ODK Central Settings
 
-- variable: minio.enabled
-  description: This installs Minio for document store.
-  type: boolean
-  label: Install Minio?
-
-- variable: opensearch.enabled
-  description: This installs OpenSearch for logging and reporting
-  type: boolean
-  label: Install OpenSearch?
-
-- variable: keymanager.enabled
-  description: This installs Keymanager for managing Keys for Encrpytion and Signatures
-  type: boolean
-  label: Install Keymanager?
-
-- variable: reporting.enabled
-  description: This installs Reporting Framework for that stream DB data to OpenSearch for Dashboards
-  type: boolean
-  label: Install Reporting Framework?
-
-- variable: reporting-init.enabled
-  description: This initializes Reporting Connectors for PBMS
-  type: boolean
-  label: Initialize Reporting Connectors (reporting-init)?
-
-- variable: loggingFlow.enabled
-  description: This will allow Fluentd to capture logs into OpenSearch.
-  type: boolean
-  label: Fluentd Logs Flow?
-
-- variable: global.pbmsAuthClientId
-  description: OIDC Client ID for PBMS
-  type: string
-  label: OIDC Client ID
-
-- variable: global.pbmsAuthClientSecret
-  description: OIDC Client Secret for PBMS
-  type: string
-  label: OIDC Client Secret
-
-# Mail Settings
-- variable: global.pbmsMailInstallationName
-  description: |-
-    Edit this only if you want to reuse existing Mail Server Installation.
-    Else enable Mail Server Installation from "Questions".
-  type: reference_service
-  label: Existing Mail Server Installation Name
-  group: Mail Settings
-  show_if: "mail.enabled=false"
-
-# ODK Central Settings
-- variable: global.odkHostname
+- variable: odk-central.hostname
   description: Hostname for ODK Central
   type: string
   label: ODK Central Hostname
   group: ODK Central Settings
+  show_if: "odk-central.enabled=true"
 
-- variable: odk-central.odk-central-backend.envVars.OIDC_CLIENT_ID
+- variable: odk-central.backend.envVars.OIDC_CLIENT_ID
   description: OIDC Client ID for ODK Central login
   type: string
   label: OIDC Client ID
   group: ODK Central Settings
   show_if: "odk-central.enabled=true"
 
-- variable: odk-central.odk-central-backend.envVars.OIDC_CLIENT_SECRET
+- variable: odk-central.backend.envVars.OIDC_CLIENT_SECRET
   description: OIDC Client Secret for ODK Central login
   type: string
   label: OIDC Client Secret
@@ -101,7 +71,13 @@ questions:
   show_if: "odk-central.enabled=true"
 
 # Minio Settings
-- variable: global.minioHostname
+- variable: minio.enabled
+  description: This installs Minio for document store.
+  type: boolean
+  label: Install Minio?
+  group: Minio Settings
+
+- variable: minio.hostname
   description: Hostname for Minio Console
   type: string
   label: Minio Console Hostname
@@ -122,45 +98,65 @@ questions:
   group: Minio Settings
   show_if: "minio.enabled=true"
 
-# OpenSearch Settings
-- variable: global.pbmsOpensearchInstallationName
+# Logging Settings
+- variable: loggingFlow.enabled
+  description: This will allow Fluentd to capture logs into OpenSearch.
+  type: boolean
+  label: Enable logs capture?
+  group: Logging Settings
+
+- variable: loggingOpensearch.enabled
+  description: This installs OpenSearch for logging
+  type: boolean
+  label: Install OpenSearch?
+  group: Logging Settings
+  # show_if: "loggingFlow.enabled=true"
+
+- variable: loggingFlow.opensearchInstallationName
   description: |-
     Edit this only if you want to reuse existing OpenSearch Installation.
-    Else enable OpenSearch Installation from "Questions".
+    Else enable OpenSearch Installation from "General Settings".
   type: reference_service
   label: Existing OpenSearch Installation Name
-  group: OpenSearch Settings
-  show_if: "opensearch.enabled=false"
+  group: Logging Settings
+  show_if: "loggingOpensearch.enabled=false&&loggingFlow.enabled=true"
 
-- variable: global.opensearchHostname
+- variable: loggingOpensearch.hostname
   description: Hostname for OpenSearch Dashboards
   type: string
   label: OpenSearch Dashboards Hostname
-  group: OpenSearch Settings
+  group: Logging Settings
+  show_if: "loggingOpensearch.enabled=true&&loggingFlow.enabled=true"
 
-- variable: opensearch.oidcClientId
+- variable: loggingOpensearch.oidcClientId
   description: OIDC Client ID for OpenSearch login
   type: string
   label: OIDC Client ID
-  group: OpenSearch Settings
-  show_if: "opensearch.enabled=true"
+  group: Logging Settings
+  show_if: "loggingOpensearch.enabled=true&&loggingFlow.enabled=true"
 
-- variable: opensearch.oidcClientSecret
+- variable: loggingOpensearch.oidcClientSecret
   description: OIDC Client Secret for OpenSearch login
   type: string
   label: OIDC Client Secret
-  group: OpenSearch Settings
-  show_if: "opensearch.enabled=true"
+  group: Logging Settings
+  show_if: "loggingOpensearch.enabled=true&&loggingFlow.enabled=true"
 
-- variable: opensearch.loggingOutput.enabled
+- variable: loggingOpensearch.loggingOutput.enabled
   description: This will allow Fluentd to send logs into this OpenSearch.
   type: boolean
   label: Fluentd Logs Output?
-  group: OpenSearch Settings
-  show_if: "opensearch.enabled=true"
+  group: Logging Settings
+  show_if: "loggingOpensearch.enabled=true&&loggingFlow.enabled=true"
 
 # Keymanager
-- variable: global.pbmsKeymanagerInstallationName
+- variable: keymanager.enabled
+  description: This installs Keymanager for managing Keys for Encrpytion and Signatures
+  type: boolean
+  label: Install Keymanager?
+  group: Keymanager Settings
+
+- variable: odoo.keymanagerInstallationName
   description: |-
     Edit this only if you want to reuse existing Keymanager Installation.
     Else enable Keymanager Installation from "General Settings".
@@ -169,11 +165,12 @@ questions:
   group: Keymanager Settings
   show_if: "keymanager.enabled=false"
 
-- variable: global.keymanagerHostname
+- variable: keymanager.hostname
   description: Hostname under which Keymanager should be accessible
   type: string
   label: Keymanager Hostname
   group: Keymanager Settings
+  show_if: "keymanager.enabled=true"
 
 - variable: keymanager.springConfig.profile
   type: string
@@ -224,11 +221,23 @@ questions:
     Do not edit this parameter unless required.
   type: string
   label: Allowed Keycloak Client IDs.
-  group: Keymanager Advanced Settings
+  group: Keymanager Settings
   show_if: "keymanager.enabled=true"
 
 # Reporting
-- variable: global.reportingInstallationName
+- variable: reporting.enabled
+  description: This installs Reporting Framework for that stream DB data to OpenSearch for Dashboards
+  type: boolean
+  label: Install Reporting Framework?
+  group: Reporting Settings
+
+- variable: reporting-init.enabled
+  description: This initializes Reporting Connectors for PBMS
+  type: boolean
+  label: Initialize Reporting Connectors (reporting-init)?
+  group: Reporting Settings
+
+- variable: reporting-init.reportingInstallationName
   description: |-
     If reporting is disabled with this installation, and if an installation of reporting
     already exists, give the name of existing installation here.
@@ -237,6 +246,7 @@ questions:
   group: Reporting Settings
   show_if: "reporting.enabled=false&&reporting-init.enabled=true"
 
+# Reporting Kafka
 - variable: reporting.kafka.enabled
   description: This installs Kafka along with the current reporting
   type: boolean
@@ -251,8 +261,7 @@ questions:
   group: Reporting Settings
   show_if: "reporting.enabled=true&&reporting.kafka.enabled=true"
 
-# Reporting Kafka
-- variable: global.reportingKafkaHostname
+- variable: reporting.kafkaUi.hostname
   description: Hostname with which Kafka UI should be accessible
   type: string
   label: Kafka UI Hostname
@@ -273,11 +282,48 @@ questions:
   group: Reporting Settings
   show_if: "reporting.enabled=true&&reporting.kafka.enabled=true&&reporting.kafkaUi.enabled=true"
 
+- variable: reporting.opensearch.enabled
+  description: This installs OpenSearch for reporting
+  type: boolean
+  label: Install OpenSearch?
+  group: Reporting Settings
+  show_if: "reporting.enabled=true"
+
+- variable: reporting-init.opensearchInstallationName
+  description: |-
+    Edit this only if you want to reuse existing OpenSearch Installation.
+    Else enable OpenSearch Installation.
+  type: reference_service
+  label: Existing OpenSearch Installation Name
+  group: Reporting Settings
+  show_if: "reporting.opensearch.enabled=false&&reporting.enabled=true"
+
+- variable: reporting.opensearch.hostname
+  description: Hostname for OpenSearch Dashboards
+  type: string
+  label: OpenSearch Dashboards Hostname
+  group: Reporting Settings
+  show_if: "reporting.opensearch.enabled=true&&reporting.enabled=true"
+
+- variable: reporting.opensearch.oidcClientId
+  description: OIDC Client ID for OpenSearch login
+  type: string
+  label: OpenSearch OIDC Client ID
+  group: Reporting Settings
+  show_if: "reporting.opensearch.enabled=true&&reporting.enabled=true"
+
+- variable: reporting.opensearch.oidcClientSecret
+  description: OIDC Client Secret for OpenSearch login
+  type: string
+  label: OpenSearch OIDC Client Secret
+  group: Reporting Settings
+  show_if: "reporting.opensearch.enabled=true&&reporting.enabled=true"
+
 # Reporting Init
 - variable: reporting-init.gitConfig.enabled
-  description: This enables downloading connectors and other configuration from Git.
+  description: This enables downloading connectors and other Reporting-init configuration from Git.
   type: boolean
-  label: Download config from Git?
+  label: Download reporting-init config from Git?
   group: Reporting Settings
   show_if: "reporting-init.enabled=true"
 
