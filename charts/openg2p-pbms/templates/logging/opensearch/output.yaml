@@ -4,6 +4,10 @@ apiVersion: logging.banzaicloud.io/v1beta1
 kind: Output
 metadata:
   name: {{ include "common.names.fullname" .Subcharts.loggingOpensearch }}
+  labels: {{ include "common.labels.standard" (dict "customLabels" .Values.loggingOpensearch.commonLabels "context" .Subcharts.loggingOpensearch) | nindent 4 }}
+  {{- if .Values.loggingOpensearch.commonAnnotations }}
+  annotations: {{ include "common.tplvalues.render" (dict "value" .Values.loggingOpensearch.commonAnnotations "context" $) | nindent 4 }}
+  {{- end }}
 spec:
   {{ .Values.loggingOpensearch.loggingOutput.type }}:
     scheme: {{ include "common.tplvalues.render" (dict "value" .Values.loggingOpensearch.loggingOutput.scheme "context" $) }}

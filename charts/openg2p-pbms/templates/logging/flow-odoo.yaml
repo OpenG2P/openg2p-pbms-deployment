@@ -4,6 +4,10 @@ apiVersion: logging.banzaicloud.io/v1beta1
 kind: Flow
 metadata:
   name: {{ include "common.names.fullname" .Subcharts.odoo }}
+  labels: {{ include "common.labels.standard" (dict "customLabels" .Values.odoo.commonLabels "context" .Subcharts.odoo) | nindent 4 }}
+  {{- if .Values.odoo.commonAnnotations }}
+  annotations: {{ include "common.tplvalues.render" (dict "value" .Values.odoo.commonAnnotations "context" $) | nindent 4 }}
+  {{- end }}
 spec:
   filters:
   - parser:
