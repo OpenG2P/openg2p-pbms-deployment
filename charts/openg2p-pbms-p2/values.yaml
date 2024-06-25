@@ -9,7 +9,7 @@ superset:
   hostname: superset-pbms.openg2p.sandbox.net
 
   oidcIssuerUrl: '{{ tpl .Values.global.keycloakIssuerUrl $ }}'
-  oidcClientId: openg2p-pbms-superset
+  oidcClientId: 'openg2p-pbms-superset-{{ .Release.Namespace }}'
   oidcClientSecret: ''
 
   supersetSecretKey: ''

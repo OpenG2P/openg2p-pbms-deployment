@@ -120,7 +120,7 @@ odk-central:
   backend:
     envVars:
       OIDC_ISSUER_URL: '{{ tpl .Values.global.keycloakIssuerUrl $ }}'
-      OIDC_CLIENT_ID: openg2p-pbms-odk
+      OIDC_CLIENT_ID: 'openg2p-pbms-odk-{{ .Release.Namespace }}'
       OIDC_CLIENT_SECRET: ""
 
 minio:
@@ -131,7 +131,7 @@ minio:
     size: 16Gi
 
   oidcWellKnownConfigUrl: '{{ tpl .Values.global.keycloakIssuerUrl $ }}/.well-known/openid-configuration'
-  oidcClientId: openg2p-pbms-minio
+  oidcClientId: 'openg2p-pbms-minio-{{ .Release.Namespace }}'
   oidcClientSecret: ''
 
   extraEnvVars:
@@ -178,7 +178,7 @@ loggingOpensearch:
   hostname: opensearch-logging-pbms.openg2p.sandbox.net
 
   oidcWellKnownConfigUrl: '{{ tpl .Values.global.keycloakIssuerUrl $ }}/.well-known/openid-configuration'
-  oidcClientId: openg2p-pbms-logging-opensearch
+  oidcClientId: 'openg2p-pbms-logging-opensearch-{{ .Release.Namespace }}'
   oidcClientSecret: ''
 
   master:
@@ -360,12 +360,12 @@ reporting:
   kafkaUi:
     enabled: true
     hostname: kafka-reporting-pbms.openg2p.sandbox.net
-    oidcClientId: 'openg2p-pbms-reporting-kafka'
+    oidcClientId: 'openg2p-pbms-reporting-kafka-{{ .Release.Namespace }}'
     oidcClientSecret: ''
   opensearch:
     enabled: true
     hostname: opensearch-reporting-pbms.openg2p.sandbox.net
-    oidcClientId: 'openg2p-pbms-reporting-opensearch'
+    oidcClientId: 'openg2p-pbms-reporting-opensearch-{{ .Release.Namespace }}'
     oidcClientSecret: ''
 
 reporting-init:
