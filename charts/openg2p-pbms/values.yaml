@@ -333,6 +333,7 @@ loggingOpensearch:
       buffer:
         flush_interval: 10s
         flush_mode: interval
+
   istio:
     enabled: true
     virtualservice:
