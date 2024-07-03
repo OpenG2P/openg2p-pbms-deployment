@@ -47,9 +47,9 @@ spec:
     {{- end }}
     route:
     - destination:
-        host: {{ tpl .Values.serviceProviderIngress.istio.virtualservice.destination $ }}
+        host: {{ include "common.tplvalues.render" (dict "value" .Values.serviceProviderIngress.istio.virtualservice.destination "context" $) }}
         port:
-          number: {{ tpl .Values.serviceProviderIngress.istio.virtualservice.destinationPort $ }}
+          number: {{ include "common.tplvalues.render" (dict "value" .Values.serviceProviderIngress.istio.virtualservice.destinationPort "context" $) }}
 {{- end }}
 {{- end }}
 {{- end }}

@@ -5,9 +5,9 @@ apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
   name: {{ include "common.names.fullname" .Subcharts.minio }}
-  labels: {{ include "common.labels.standard" (dict "customLabels" .Values.minio.commonLabels "context" .Subcharts.minio) | nindent 4 }}
+  labels: {{- include "common.labels.standard" (dict "customLabels" .Values.minio.commonLabels "context" .Subcharts.minio) | nindent 4 }}
   {{- if .Values.minio.commonAnnotations }}
-  annotations: {{ include "common.tplvalues.render" (dict "value" .Values.minio.commonAnnotations "context" $) | nindent 4 }}
+  annotations: {{- include "common.tplvalues.render" (dict "value" .Values.minio.commonAnnotations "context" $) | nindent 4 }}
   {{- end }}
 spec:
   selector:

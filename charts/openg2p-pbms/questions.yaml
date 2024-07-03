@@ -271,14 +271,14 @@ questions:
 - variable: reporting.kafkaUi.oidcClientId
   description: OIDC Client ID for Kafka UI login
   type: string
-  label: OIDC Client ID
+  label: Kafka OIDC Client ID
   group: Reporting Settings
   show_if: "reporting.enabled=true&&reporting.kafka.enabled=true&&reporting.kafkaUi.enabled=true"
 
 - variable: reporting.kafkaUi.oidcClientSecret
   description: OIDC Client Secret for Kafka UI login
   type: string
-  label: OIDC Client Secret
+  label: Kafka OIDC Client Secret
   group: Reporting Settings
   show_if: "reporting.enabled=true&&reporting.kafka.enabled=true&&reporting.kafkaUi.enabled=true"
 
