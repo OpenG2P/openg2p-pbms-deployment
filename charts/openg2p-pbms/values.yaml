@@ -12,7 +12,7 @@ odoo:
   enabled: true
 
   oidcIssuerUrl: '{{ tpl .Values.global.keycloakIssuerUrl $ }}'
-  oidcClientId: 'openg2p-pbms'
+  oidcClientId: 'openg2p-pbms-{{ .Release.Namespace }}'
   oidcClientSecret: ''
 
   mailInstallationName: '{{ .Release.Name }}-mail'
@@ -81,7 +81,7 @@ odoo:
   - name: OPENG2P_SMTP_PORT
     value: "25"
   - name: LOG_HANDLER
-    value: "[':INFO']"
+    value: '[":INFO"]'
   - name: LOG_DB
     value: "False"
   - name: KEYMANAGER_API_BASE_URL
@@ -106,6 +106,12 @@ keymanager:
     rawConfig: ""
   envVars:
     auth_server_admin_allowed_audience: 'openg2p-sr,openg2p-sr-{{ .Release.Namespace }},openg2p-pbms,openg2p-pbms-{{ .Release.Namespace }},openg2p-spar-{{ .Release.Namespace }}'
+  postgresInit:
+    commonAnnotations:
+      "helm.sh/hook-weight": "0"
+  keygen:
+    commonAnnotations:
+      "helm.sh/hook-weight": "1"
 
 mail:
   enabled: true
@@ -182,11 +188,12 @@ loggingOpensearch:
   oidcClientSecret: ''
 
   master:
-    replicaCount: 1
+    masterOnly: false
     persistence:
       size: 8Gi
+    replicaCount: 1
     heapSize: 256m
-    masterOnly: false
+    resourcesPreset: "none"
 
   data:
     replicaCount: 0
@@ -245,7 +252,7 @@ loggingOpensearch:
                 challenge: false
                 config:
                   subject_key: preferred_username
-                  roles_key: groups
+                  roles_key: client_roles
                   openid_connect_url: '{{ tpl .Values.loggingOpensearch.oidcWellKnownConfigUrl $ }}'
               authentication_backend:
                 type: noop
@@ -269,6 +276,8 @@ loggingOpensearch:
   dashboards:
     enabled: true
     replicaCount: 1
+
+    resourcesPreset: "none"
 
     extraVolumes:
     - name: dashboards-config
@@ -381,6 +390,8 @@ reporting-init:
     subDir: "scripts/pbms"
   envVars:
     DB_NAME: pbmsdb
+  hookAnnotations:
+    "helm.sh/hook-weight": "0"
 
 loggingFlow:
   enabled: true

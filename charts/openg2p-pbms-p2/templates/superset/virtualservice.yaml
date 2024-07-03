@@ -5,9 +5,9 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: {{ include "common.names.fullname" .Subcharts.superset }}
-  labels: {{ include "common.labels.standard" (dict "customLabels" .Values.superset.commonLabels "context" .Subcharts.superset) | nindent 4 }}
+  labels: {{- include "common.labels.standard" (dict "customLabels" .Values.superset.commonLabels "context" .Subcharts.superset) | nindent 4 }}
   {{- if .Values.superset.commonAnnotations }}
-  annotations: {{ include "common.tplvalues.render" (dict "value" .Values.superset.commonAnnotations "context" $) | nindent 4 }}
+  annotations: {{- include "common.tplvalues.render" (dict "value" .Values.superset.commonAnnotations "context" $) | nindent 4 }}
   {{- end }}
 spec:
   hosts:
@@ -22,9 +22,9 @@ spec:
           x-forwarded-proto: https
     route:
     - destination:
-        host: {{ tpl .Values.superset.istio.virtualservice.destination $ }}
+        host: {{ include "common.tplvalues.render" (dict "value" .Values.superset.istio.virtualservice.destination "context" $) }}
         port:
-          number: {{ tpl .Values.superset.istio.virtualservice.destinationPort $ }}
+          number: {{ include "common.tplvalues.render" (dict "value" .Values.superset.istio.virtualservice.destinationPort "context" $) }}
 {{- end }}
 {{- end }}
 {{- end }}

@@ -5,7 +5,7 @@ type: application
 version: 0.0.0-develop
 dependencies:
 - name: odoo
-  version: 21.6.5
+  version: 26.2.9
   repository: oci://registry-1.docker.io/bitnamicharts
   condition: odoo.enabled
 - name: mail

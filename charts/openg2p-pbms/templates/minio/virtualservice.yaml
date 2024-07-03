@@ -5,9 +5,9 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: {{ include "common.names.fullname" .Subcharts.minio }}
-  labels: {{ include "common.labels.standard" (dict "customLabels" .Values.minio.commonLabels "context" .Subcharts.minio) | nindent 4 }}
+  labels: {{- include "common.labels.standard" (dict "customLabels" .Values.minio.commonLabels "context" .Subcharts.minio) | nindent 4 }}
   {{- if .Values.minio.commonAnnotations }}
-  annotations: {{ include "common.tplvalues.render" (dict "value" .Values.minio.commonAnnotations "context" $) | nindent 4 }}
+  annotations: {{- include "common.tplvalues.render" (dict "value" .Values.minio.commonAnnotations "context" $) | nindent 4 }}
   {{- end }}
 spec:
   hosts:
@@ -22,9 +22,9 @@ spec:
           x-forwarded-proto: https
     route:
     - destination:
-        host: {{ tpl .Values.minio.istio.virtualservice.destination $ }}
+        host: {{ include "common.tplvalues.render" (dict "value" .Values.minio.istio.virtualservice.destination "context" $) }}
         port:
-          number: {{ tpl .Values.minio.istio.virtualservice.destinationPort $ }}
+          number: {{ include "common.tplvalues.render" (dict "value" .Values.minio.istio.virtualservice.destinationPort "context" $) }}
 {{- end }}
 {{- end }}
 {{- end }}
