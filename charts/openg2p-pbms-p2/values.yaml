@@ -147,7 +147,6 @@ esignet:
   postgresInit:
     commonAnnotations:
       "helm.sh/hook-weight": "0"
-
   keygen:
     commonAnnotations:
       "helm.sh/hook-weight": "1"

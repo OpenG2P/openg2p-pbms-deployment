@@ -224,7 +224,6 @@ loggingOpensearch:
       _meta:
         type: "config"
         config_version: 2
-
       config:
         dynamic:
           http:
