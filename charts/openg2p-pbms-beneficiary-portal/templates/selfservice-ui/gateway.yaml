@@ -1,0 +1,40 @@
+{{- if .Values.selfserviceUi.enabled  }}
+{{- if .Values.selfserviceUi.istio.enabled  }}
+{{- if .Values.selfserviceUi.istio.gateway.enabled  }}
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: {{ include "common.names.fullname" . }}-ui
+  labels: {{- include "common.labels.standard" (dict "customLabels" .Values.commonLabels "context" $) | nindent 4 }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    {{ toYaml .Values.selfserviceUi.istio.gateway.ingressController | nindent 4 }}
+  servers:
+  {{- if .Values.selfserviceUi.istio.gateway.httpEnabled }}
+  - port:
+      name: http2
+      number: 8080
+      protocol: HTTP2
+    hosts:
+      - {{ default .Values.hostname .Values.selfserviceUi.istio.gateway.host | quote }}
+    {{- if .Values.selfserviceUi.istio.gateway.httpTlsRedirect }}
+    tls:
+      httpsRedirect: true
+    {{- end }}
+  {{- end }}
+  {{- if .Values.selfserviceUi.istio.gateway.httpsEnabled }}
+  - port:
+      name: https
+      number: 8443
+      protocol: HTTPS
+    hosts:
+      - {{ default .Values.hostname .Values.selfserviceUi.istio.gateway.host | quote }}
+    tls:
+      {{ toYaml (omit .Values.selfserviceUi.istio.gateway.tls "enabled") | nindent 6 }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

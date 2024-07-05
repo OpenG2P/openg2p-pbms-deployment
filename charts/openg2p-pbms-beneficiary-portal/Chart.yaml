@@ -1,0 +1,12 @@
+apiVersion: v2
+name: openg2p-pbms-beneficiary-portal
+description: A Helm chart for OpenG2P PBMS Beneficiary Portal
+type: application
+version: 0.0.0-develop
+dependencies:
+- name: common
+  version: 2.x.x
+  repository: oci://registry-1.docker.io/bitnamicharts
+icon: https://openg2p.github.io/openg2p-helm/openg2p-logo.png
+annotations:
+  catalog.cattle.io/display-name: "OpenG2P PBMS Beneficiary Portal"

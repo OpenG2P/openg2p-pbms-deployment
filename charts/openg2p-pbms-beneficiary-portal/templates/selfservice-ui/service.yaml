@@ -1,0 +1,26 @@
+{{- if .Values.selfserviceUi.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "common.names.fullname" . }}-ui
+  labels: {{- include "common.labels.standard" (dict "customLabels" .Values.commonLabels "context" $) | nindent 4 }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.selfserviceUi.service.type }}
+  {{- if (or (eq .Values.selfserviceUi.service.type "LoadBalancer") (eq .Values.selfserviceUi.service.type "NodePort")) }}
+  externalTrafficPolicy: {{ .Values.selfserviceUi.service.externalTrafficPolicy | quote }}
+  {{- end }}
+  {{ if eq .Values.selfserviceUi.service.type "LoadBalancer" }}
+  loadBalancerSourceRanges: {{ .Values.selfserviceUi.service.loadBalancerSourceRanges }}
+  {{ end }}
+  {{- if (and (eq .Values.selfserviceUi.service.type "LoadBalancer") (not (empty .Values.selfserviceUi.service.loadBalancerIP))) }}
+  loadBalancerIP: {{ .Values.selfserviceUi.service.loadBalancerIP }}
+  {{- end }}
+  ports:
+    - name: http
+      port: {{ .Values.selfserviceUi.service.port }}
+      targetPort: {{ .Values.selfserviceUi.containerPort }}
+  selector: {{- include "common.labels.matchLabels" (dict "customLabels" .Values.selfserviceUi.podLabels "context" $) | nindent 4 }}
+{{- end }}

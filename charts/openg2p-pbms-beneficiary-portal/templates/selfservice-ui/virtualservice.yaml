@@ -1,0 +1,44 @@
+{{- if .Values.selfserviceUi.enabled }}
+{{- if .Values.selfserviceUi.istio.enabled }}
+{{- if .Values.selfserviceUi.istio.virtualservice.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ include "common.names.fullname" . }}-ui
+  labels: {{- include "common.labels.standard" (dict "customLabels" .Values.commonLabels "context" $) | nindent 4 }}
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  hosts:
+  - {{ default .Values.hostname .Values.selfserviceUi.istio.virtualservice.host | quote }}
+  gateways:
+  - {{ default (include "common.names.fullname" .) .Values.selfserviceUi.istio.virtualservice.gateway }}
+  http:
+  - headers:
+      request:
+        set:
+          x-forwarded-host: {{ default .Values.hostname .Values.selfserviceUi.istio.virtualservice.host | quote }}
+          x-forwarded-proto: https
+    match:
+    - uri:
+        prefix: {{ .Values.selfserviceUi.istio.virtualservice.prefix }}
+    {{- if .Values.selfserviceUi.istio.virtualservice.rewriteUri }}
+    rewrite:
+      uri: {{ .Values.selfserviceUi.istio.virtualservice.rewriteUri }}
+    {{- end }}
+    route:
+    - destination:
+        host: {{ include "common.tplvalues.render" (dict "value" .Values.selfserviceUi.istio.virtualservice.destination "context" $) }}
+        port:
+          number: {{ include "common.tplvalues.render" (dict "value" .Values.selfserviceUi.istio.virtualservice.destinationPort "context" $) }}
+  {{- if .Values.selfserviceUi.istio.virtualservice.redirectToSelfServiceEnabled }}
+  - match:
+    - uri:
+        exact: "/"
+    redirect:
+      uri: {{ .Values.selfserviceUi.istio.virtualservice.prefix }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,425 @@
+## Global Docker image parameters
+## Please, note that this will override the image parameters, including dependencies, configured to use the global value
+## Current available global Docker image parameters: imageRegistry and imagePullSecrets
+##
+# global:
+#   imageRegistry: myRegistryName
+#   imagePullSecrets:
+#     - myRegistryKeySecretName
+#   storageClass: myStorageClass
+global:
+  esignetBaseUrl: https://esignet.sandbox.openg2p.net
+
+hostname: beneficiary.openg2p.sandbox.net
+
+nameOverride: pbms-beneficiary-portal
+
+## Add labels to all the deployed resources
+##
+commonLabels: {}
+
+## Add annotations to all the deployed resources
+##
+commonAnnotations: {}
+
+## Extra objects to deploy (value evaluated as a template)
+##
+extraDeploy: []
+
+## Number of nodes
+##
+replicaCount: 1
+
+service:
+  type: ClusterIP
+  port: 80
+  ## loadBalancerIP for the SuiteCRM Service (optional, cloud specific)
+  ## ref: http://kubernetes.io/docs/user-guide/services/#type-loadbalancer
+  ##
+  ## loadBalancerIP:
+  ##
+  ## nodePorts:
+  ##   http: <to set explicitly, choose port between 30000-32767>
+  ##   https: <to set explicitly, choose port between 30000-32767>
+  ##
+
+  nodePorts:
+    http: ""
+    https: ""
+  ## Enable client source IP preservation
+  ## ref http://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  ##
+  externalTrafficPolicy: Cluster
+
+image:
+  registry: docker.io
+  repository: openg2p/openg2p-selfservice-api
+  tag: develop
+  ## Specify a imagePullPolicy
+  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+  ##
+  pullPolicy: Always
+  ## Optionally specify an array of imagePullSecrets.
+  ## Secrets must be manually created in the namespace.
+  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+  ##
+  # pullSecrets:
+  #   - myRegistryKeySecretName
+
+## Port on which this particular container runs.
+containerPort: 8000
+
+## Configure extra options for liveness and readiness probes
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/#configure-probes
+##
+startupProbe:
+  enabled: true
+  httpGet:
+    path: /ping
+    port: 8000
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 30
+  successThreshold: 1
+
+livenessProbe:
+  enabled: true
+  httpGet:
+    path: /ping
+    port: 8000
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+  successThreshold: 1
+
+readinessProbe:
+  enabled: true
+  httpGet:
+    path: /ping
+    port: 8000
+  initialDelaySeconds: 0
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+  successThreshold: 1
+
+## Command and args for running the container (set to default if not set). Use array form
+##
+command: []
+args: []
+
+## Deployment pod host aliases
+## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
+##
+hostAliases: []
+
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+##
+## We usually recommend not to specify default resources and to leave this as a conscious
+## choice for the user. This also increases chances charts run on environments with little
+## resources, such as Minikube. If you do want to specify resources, uncomment the following
+## lines, adjust them as necessary.
+# resources:
+#   limits:
+#     cpu: 500m
+#     memory: 2250Mi
+#   requests:
+#     cpu: 100m
+#     memory: 1500Mi
+resources: {}
+
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+## Clamav container already runs as 'mosip' user, so we may not need to enable this
+containerSecurityContext:
+  enabled: false
+  runAsUser: 1001
+  runAsNonRoot: true
+
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+##
+podSecurityContext:
+  enabled: false
+  fsGroup: 1001
+
+## Pod affinity preset
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
+## Allowed values: soft, hard
+##
+podAffinityPreset: ""
+
+## Pod anti-affinity preset
+## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#inter-pod-affinity-and-anti-affinity
+## Allowed values: soft, hard
+##
+podAntiAffinityPreset: soft
+
+## Node affinity preset
+## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity
+## Allowed values: soft, hard
+##
+nodeAffinityPreset:
+  ## Node affinity type
+  ## Allowed values: soft, hard
+  ##
+  type: ""
+  ## Node label key to match
+  ## E.g.
+  ## key: "kubernetes.io/e2e-az-name"
+  ##
+  key: ""
+  ## Node label values to match
+  ## E.g.
+  ## values:
+  ##   - e2e-az1
+  ##   - e2e-az2
+  ##
+  values: []
+
+## Affinity for pod assignment. Evaluated as a template.
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: {}
+
+## Node labels for pod assignment. Evaluated as a template.
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: {}
+
+## Tolerations for pod assignment. Evaluated as a template.
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+
+## Pod extra labels
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+##
+podLabels: {}
+
+## Annotations for server pods.
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+##
+podAnnotations: {}
+
+##  pods' priority.
+## ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/
+##
+# priorityClassName: ""
+
+## lifecycleHooks for the  container to automate configuration before or after startup.
+##
+lifecycleHooks: {}
+
+## Custom Liveness probes for
+##
+customLivenessProbe: {}
+
+## Custom Rediness probes
+##
+customReadinessProbe: {}
+
+## Update strategy - only really applicable for deployments with RWO PVs attached
+## If replicas = 1, an update can get "stuck", as the previous pod remains attached to the
+## PV, and the "incoming" pod can never start. Changing the strategy to "Recreate" will
+## terminate the single previous pod, so that the new, incoming pod can attach to the PV
+##
+updateStrategy:
+  type: RollingUpdate
+
+## Add init containers to the  pods.
+## Example:
+## initContainers:
+##   - name: your-image-name
+##     image: your-image
+##     imagePullPolicy: Always
+##     ports:
+##       - name: portname
+##         containerPort: 1234
+##
+initContainers: []
+
+## Add sidecars to the  pods.
+## Example:
+## sidecars:
+##   - name: your-image-name
+##     image: your-image
+##     imagePullPolicy: Always
+##     ports:
+##       - name: portname
+##         containerPort: 1234
+##
+sidecars: []
+
+## Specifies whether a ServiceAccount should be created
+##
+serviceAccount:
+  create: true
+  ## The name of the ServiceAccount to use.
+  ## If not set and create is true, a name is generated using the fullname template
+  ##
+  name:
+
+## Extra volumes to add to the deployment
+##
+extraVolumes: []
+
+## Extra volume mounts to add to the container
+##
+extraVolumeMounts: []
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+istio:
+  enabled: true
+  virtualservice:
+    enabled: true
+    host: ""
+    gateway: "internal"
+    destination: '{{ include "common.names.fullname" . }}'
+    destinationPort: '{{ .Values.service.port }}'
+    prefix: /v1/selfservice
+    rewriteUri: /
+  gateway:
+    enabled: false
+    host: ""
+    ingressController:
+      istio: ingressgateway
+    httpTlsRedirect: false
+    httpEnabled: true
+    httpsEnabled: false
+    tls:
+      mode: SIMPLE
+      credentialName: ""
+
+selfserviceUi:
+  enabled: true
+  replicaCount: 1
+  service:
+    type: ClusterIP
+    port: 80
+    nodePorts:
+      http: ""
+      https: ""
+    externalTrafficPolicy: Cluster
+  image:
+    registry: docker.io
+    repository: openg2p/openg2p-selfservice-ui
+    tag: develop
+    pullPolicy: Always
+    pullSecrets: []
+  containerPort: 3000
+  startupProbe:
+    enabled: true
+    httpGet:
+      path: /
+      port: 3000
+    initialDelaySeconds: 0
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 30
+    successThreshold: 1
+  livenessProbe:
+    enabled: true
+    httpGet:
+      path: /
+      port: 3000
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+  readinessProbe:
+    enabled: true
+    httpGet:
+      path: /
+      port: 3000
+    initialDelaySeconds: 0
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+  command: []
+  args: []
+  hostAliases: []
+  resources: {}
+  containerSecurityContext:
+    enabled: false
+    runAsUser: 1001
+    runAsNonRoot: true
+  podSecurityContext:
+    enabled: false
+    fsGroup: 1001
+  podAffinityPreset: ""
+  podAntiAffinityPreset: soft
+  nodeAffinityPreset:
+    type: ""
+    key: ""
+    values: []
+  affinity: {}
+  nodeSelector: {}
+  tolerations: []
+  podLabels:
+    app.kubernetes.io/name: '{{ include "common.names.name" . }}-ui'
+  podAnnotations: {}
+  # priorityClassName: ""
+  lifecycleHooks: {}
+  updateStrategy:
+    type: RollingUpdate
+  initContainers: []
+  sidecars: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 1
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+  istio:
+    enabled: true
+    virtualservice:
+      enabled: true
+      host: ""
+      gateway: "internal"
+      destination: '{{ include "common.names.fullname" . }}-ui'
+      destinationPort: '{{ .Values.selfserviceUi.service.port }}'
+      prefix: /selfservice
+      rewriteUri: ""
+      redirectToSelfServiceEnabled: true
+    gateway:
+      enabled: false
+      host: ""
+      ingressController:
+        istio: ingressgateway
+      httpTlsRedirect: false
+      httpEnabled: true
+      httpsEnabled: false
+      tls:
+        mode: SIMPLE
+        credentialName: ""
+  envVars:
+    NEXT_PUBLIC_BASE_PATH: "/selfservice"
+    NEXT_PUBLIC_BASE_API_PATH: "/v1/selfservice"
+  envVarsFrom: {}
+
+envVars:
+  PORTAL_DB_HOSTNAME: '{{ tpl .Values.postgresqlInstallationName $ }}'
+  PORTAL_DB_USERNAME: "pbmsuser"
+  PORTAL_OPENAPI_ROOT_PATH: "/v1/selfservice"
+  PORTAL_AUTH_AUTH_DEFAULT_ISSUERS: '["{{ .Values.global.esignetBaseUrl }}/v1/esignet"]'
+  PORTAL_AUTH_AUTH_DEFAULT_JWKS_URLS: '["{{ .Values.global.esignetBaseUrl }}/v1/esignet/oauth/.well-known/jwks.json"]'
+
+envVarsFrom:
+  PORTAL_DB_PASSWORD:
+    secretKeyRef:
+      name: '{{ tpl .Values.postgresqlInstallationName $ }}'
+      key: password
+
+postgresqlInstallationName: '{{ .Release.Name | replace "-beneficiary-portal-" "-" }}-postgresql'
