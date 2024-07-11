@@ -1,6 +1,8 @@
 # OpenG2P PBMS Helm Chart - Part 2
 
-As the maximum size of a helm chart cannot be more than 1MiB (each etcd object can only hold maximum of 1MiB unless configured otherwise), the OpenG2P PBMS helm chart has been split into two parts.
+As the maximum size of a helm chart cannot be more than 1MiB
+(each etcd object can only hold maximum of 1MiB unless configured otherwise),
+the OpenG2P PBMS helm chart has been split into two parts.
 
 This is the second part. This contains the following components:
 
