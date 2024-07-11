@@ -1,0 +1,10 @@
+questions:
+- variable: hostname
+  description: Hostname under which beneficiary portal should be accessible
+  type: string
+  label: Beneficiary Portal Hostname
+
+- variable: global.esignetBaseUrl
+  description: Base URL of eSignet. Beneficiary Portal will consider this esignet as valid Authenticator.
+  type: string
+  label: eSignet Base URL
