@@ -12,7 +12,7 @@ superset:
   oidcIssuerUrl: '{{ tpl .Values.global.keycloakIssuerUrl $ }}'
   oidcClientId: 'openg2p-pbms-superset-{{ .Release.Namespace }}'
   oidcClientSecret: ''
-  allowFramesFrom: '{{ tpl .Values.global.pbmsHostname $ }}'
+  cspDefaultSrc: '{{ tpl .Values.global.pbmsHostname $ }}'
 
   supersetSecretKey: ''
 
@@ -100,8 +100,13 @@ superset:
       TALISMAN_ENABLED = True
       TALISMAN_CONFIG = {
         "force_https": True,
-        "frame_options": "ALLOWFROM",
-        "frame_options_allow_from": "{{ tpl .Values.allowFramesFrom $ }}"
+        "frame_options": False,
+        "content_security_policy": {
+          "default-src": [
+            "'self'",
+            "{{ tpl .Values.cspDefaultSrc $ }}",
+          ],
+        }
       }
 
   istio:
