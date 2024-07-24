@@ -423,4 +423,4 @@ envVarsFrom:
       name: '{{ tpl .Values.postgresqlInstallationName $ }}'
       key: password
 
-postgresqlInstallationName: '{{ .Release.Name | replace "-beneficiary-portal-" "-" }}-postgresql'
+postgresqlInstallationName: '{{ .Release.Name | replace "-beneficiary-portal" "" }}-postgresql'
