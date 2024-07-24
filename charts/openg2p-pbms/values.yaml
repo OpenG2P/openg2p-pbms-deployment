@@ -85,7 +85,7 @@ odoo:
   - name: LOG_DB
     value: "False"
   - name: KEYMANAGER_API_BASE_URL
-    value: '{{ tpl .Values.keymanagerInstallationName $ }}'
+    value: 'http://{{ tpl .Values.keymanagerInstallationName $ }}/v1/keymanager'
   - name: KEYMANAGER_AUTH_URL
     value: '{{ tpl .Values.oidcIssuerUrl $ }}/protocol/openid-connect/token'
   - name: KEYMANAGER_AUTH_CLIENT_ID
