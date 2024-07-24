@@ -318,7 +318,7 @@ selfserviceUi:
   startupProbe:
     enabled: true
     httpGet:
-      path: /
+      path: /selfservice
       port: 3000
     initialDelaySeconds: 0
     periodSeconds: 10
@@ -328,7 +328,7 @@ selfserviceUi:
   livenessProbe:
     enabled: true
     httpGet:
-      path: /
+      path: /selfservice
       port: 3000
     initialDelaySeconds: 20
     periodSeconds: 10
@@ -338,7 +338,7 @@ selfserviceUi:
   readinessProbe:
     enabled: true
     httpGet:
-      path: /
+      path: /selfservice
       port: 3000
     initialDelaySeconds: 0
     periodSeconds: 10
@@ -412,6 +412,7 @@ selfserviceUi:
 envVars:
   PORTAL_DB_HOSTNAME: '{{ tpl .Values.postgresqlInstallationName $ }}'
   PORTAL_DB_USERNAME: pbmsuser
+  PORTAL_DB_DBNAME: pbmsdb
   PORTAL_OPENAPI_ROOT_PATH: "/v1/selfservice"
   PORTAL_AUTH_DEFAULT_ID_TOKEN_VERIFY_AT_HASH: false
   PORTAL_AUTH_DEFAULT_ISSUERS: '["{{ .Values.global.esignetBaseUrl }}/v1/esignet"]'
