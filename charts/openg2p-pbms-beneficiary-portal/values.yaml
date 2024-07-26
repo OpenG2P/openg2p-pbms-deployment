@@ -284,7 +284,7 @@ istio:
     gateway: "internal"
     destination: '{{ include "common.names.fullname" . }}'
     destinationPort: '{{ .Values.service.port }}'
-    prefix: /v1/selfservice
+    prefix: /v1/selfservice/
     rewriteUri: /
   gateway:
     enabled: false
