@@ -1,10 +1,4 @@
 questions:
-- variable: global.pbmsHostname
-  description: PBMS Hostname
-  type: string
-  label: PBMS Hostname
-  group: General Settings
-
 - variable: global.keycloakBaseUrl
   description: Keycloak Base Url used in all components
   type: string
