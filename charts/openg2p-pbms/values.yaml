@@ -125,6 +125,7 @@ odk-central:
     # envVars:
   backend:
     envVars:
+      OIDC_ENABLED: false
       OIDC_ISSUER_URL: '{{ tpl .Values.global.keycloakIssuerUrl $ }}'
       OIDC_CLIENT_ID: 'openg2p-pbms-odk-{{ .Release.Namespace }}'
       OIDC_CLIENT_SECRET: ""
