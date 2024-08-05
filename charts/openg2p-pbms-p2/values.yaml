@@ -1,5 +1,4 @@
 global:
-  pbmsHostname: pbms.openg2p.sandbox.net
   keycloakBaseUrl: https://keycloak.openg2p.sandbox.net
   keycloakIssuerUrl: '{{ tpl .Values.global.keycloakBaseUrl $ }}/realms/master'
 
@@ -12,7 +11,6 @@ superset:
   oidcIssuerUrl: '{{ tpl .Values.global.keycloakIssuerUrl $ }}'
   oidcClientId: 'openg2p-pbms-superset-{{ .Release.Namespace }}'
   oidcClientSecret: ''
-  cspDefaultSrc: '{{ tpl .Values.global.pbmsHostname $ }}'
 
   supersetSecretKey: ''
 
@@ -97,17 +95,7 @@ superset:
       SESSION_COOKIE_HTTPONLY = True
       SESSION_COOKIE_SECURE = True
       SESSION_COOKIE_SAMESITE = None
-      TALISMAN_ENABLED = True
-      TALISMAN_CONFIG = {
-        "force_https": True,
-        "frame_options": False,
-        "content_security_policy": {
-          "default-src": [
-            "'self'",
-            "{{ tpl .Values.cspDefaultSrc $ }}",
-          ],
-        }
-      }
+      TALISMAN_ENABLED = False
 
   istio:
     enabled: true
