@@ -35,6 +35,14 @@ questions:
   label: OIDC Client Secret
   group: General Settings
 
+- variable: odoo.extraAddonsUrlsToPull
+  description: |-
+    Comma separated.
+    Example git://17.0-develop//https://github.com/openg2p/openg2p-registry.
+  type: string
+  label: List of additional addons to be pulled.
+  group: General Settings
+
 # Mail Settings
 - variable: mail.enabled
   description: This installs Mail server for relaying SMTP requests to preferred backend.
