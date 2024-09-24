@@ -415,8 +415,8 @@ envVars:
   PORTAL_DB_DBNAME: pbmsdb
   PORTAL_OPENAPI_ROOT_PATH: "/v1/selfservice"
   PORTAL_AUTH_DEFAULT_ID_TOKEN_VERIFY_AT_HASH: false
-  PORTAL_AUTH_DEFAULT_ISSUERS: '["{{ .Values.global.esignetBaseUrl }}/v1/esignet"]'
-  PORTAL_AUTH_DEFAULT_JWKS_URLS: '["{{ .Values.global.esignetBaseUrl }}/v1/esignet/oauth/.well-known/jwks.json"]'
+  PORTAL_AUTH_DEFAULT_ISSUERS: '["{{ .Values.global.esignetBaseUrl }}"]'
+  PORTAL_AUTH_DEFAULT_JWKS_URLS: '["{{ .Values.global.esignetBaseUrl }}/.well-known/jwks.json"]'
 
 envVarsFrom:
   PORTAL_DB_PASSWORD:
