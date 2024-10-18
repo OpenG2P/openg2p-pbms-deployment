@@ -2,7 +2,7 @@ apiVersion: v2
 name: openg2p-pbms
 description: A Helm chart for OpenG2P PBMS - Part 1
 type: application
-version: 1.2.0-develop
+version: 1.2.0
 dependencies:
 - name: odoo
   version: 26.2.9
@@ -30,11 +30,11 @@ dependencies:
   repository: https://openg2p.github.io/openg2p-helm
   condition: keymanager.enabled
 - name: reporting
-  version: 0.0.0-develop
+  version: 1.2.0
   repository: https://openg2p.github.io/openg2p-helm
   condition: reporting.enabled
 - name: reporting-init
-  version: 0.0.0-develop
+  version: 1.2.0
   repository: https://openg2p.github.io/openg2p-helm
   condition: reporting-init.enabled
 icon: https://openg2p.github.io/openg2p-helm/openg2p-logo.png
