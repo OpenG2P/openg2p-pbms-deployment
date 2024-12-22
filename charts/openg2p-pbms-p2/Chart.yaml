@@ -2,7 +2,7 @@ apiVersion: v2
 name: openg2p-pbms-p2
 description: A Helm chart for OpenG2P PBMS - Part 2
 type: application
-version: 1.2.0
+version: 1.2.2
 dependencies:
 - name: superset
   version: 0.12.11
