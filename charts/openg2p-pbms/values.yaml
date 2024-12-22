@@ -24,7 +24,7 @@ odoo:
 
   image:
     repository: openg2p/openg2p-pbms-odoo-package
-    tag: 1.2.0
+    tag: 1.2.2
     pullPolicy: Always
 
   service:
