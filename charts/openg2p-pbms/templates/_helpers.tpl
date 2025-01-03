@@ -1,51 +1,26 @@
 {{/*
-Expand the name of the chart.
+Render Env values section
 */}}
-{{- define "pbms.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as a full name.
-*/}}
-{{- define "pbms.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- define "pbms.baseEnvVars" -}}
+{{- $context := .context -}}
+{{- range $k, $v := .envVars }}
+- name: {{ $k }}
+{{- if or (kindIs "int64" $v) (kindIs "float64" $v) (kindIs "bool" $v) }}
+  value: {{ $v | quote }}
+{{- else if kindIs "string" $v }}
+  value: {{ include "common.tplvalues.render" ( dict "value" $v "context" $context ) | squote }}
 {{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+  valueFrom: {{- include "common.tplvalues.render" ( dict "value" $v "context" $context ) | nindent 4}}
 {{- end }}
 {{- end }}
-{{- end }}
+{{- end -}}
 
-{{/*
-Create chart name and version as used by the chart label.
-*/}}
-{{- define "pbms.chart" -}}
-{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
-{{- end }}
+{{- define "pbms.kafka-ui.envVars" -}}
+{{- $envVars := merge (deepCopy .Values.kafkaUi.envVars) (deepCopy .Values.kafkaUi.envVarsFrom) -}}
+{{- include "pbms.baseEnvVars" (dict "envVars" $envVars "context" $) }}
+{{- end -}}
 
-{{/*
-Common labels
-*/}}
-{{- define "pbms.labels" -}}
-helm.sh/chart: {{ include "pbms.chart" . }}
-{{ include "pbms.selectorLabels" . }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end }}
-
-{{/*
-Selector labels
-*/}}
-{{- define "pbms.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "pbms.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
+{{- define "pbms.landing.envVars" -}}
+{{- $envVars := merge (deepCopy .Values.landing.envVars) (deepCopy .Values.landing.envVarsFrom) -}}
+{{- include "pbms.baseEnvVars" (dict "envVars" $envVars "context" $) }}
+{{- end -}}
