@@ -20,7 +20,6 @@ global:
 
 odoo:
   enabled: true
-
   hostname: '{{ tpl .Values.global.pbmsAdminHostname $ }}'
 
   oidcIssuerUrl: '{{ tpl .Values.global.keycloakIssuerUrl $ }}'
