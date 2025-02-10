@@ -1036,7 +1036,7 @@ landing:
   extraVolumeMounts: []
 
   envVars:
-    PBMS_ADMIN_URL: 'https://{{ tpl .Values.global.pbmsAdminHostname $ }}'
+    PBMS_ADMIN_URL: 'https://{{ tpl .Values.global.pbmsAdminHostname $ }}/web'
     PBMS_BENEFICIARY_URL: 'https://{{ tpl .Values.global.pbmsBeneficiaryPortalHostname $ }}'
     PBMS_SERVICE_PROVIDER_URL: 'https://{{ tpl .Values.global.pbmsServiceProviderPortalHostname $ }}'
     PBMS_REPORTING_URL: 'https://{{ tpl .Values.global.pbmsOpensearchHostname $ }}'
