@@ -2,7 +2,7 @@ apiVersion: v2
 name: openg2p-pbms
 description: A Helm chart for OpenG2P PBMS
 type: application
-version: 2.0.0-develop
+version: 2.0.2
 dependencies:
 - name: odoo
   version: 26.2.9
