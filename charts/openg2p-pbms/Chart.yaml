@@ -2,7 +2,7 @@ apiVersion: v2
 name: openg2p-pbms
 description: A Helm chart for OpenG2P PBMS
 type: application
-version: 2.0.0-develop
+version: 2.1.0-develop
 dependencies:
 - name: odoo
   version: 26.2.9
@@ -33,7 +33,7 @@ dependencies:
   repository: https://openg2p.github.io/openg2p-helm
   condition: artifactory.enabled
 - name: keymanager
-  version: 12.0.2
+  version: 12.1.0
   repository: https://openg2p.github.io/openg2p-helm
   condition: keymanager.enabled
 - name: softhsm
@@ -72,7 +72,7 @@ dependencies:
   condition: mock-identity-system.enabled
 - name: openg2p-pbms-beneficiary-portal
   alias: beneficiaryPortal
-  version: 2.0.0-develop
+  version: 2.1.0-develop
   condition: beneficiaryPortal.enabled
 icon: https://openg2p.github.io/openg2p-helm/openg2p-logo.png
 annotations:
